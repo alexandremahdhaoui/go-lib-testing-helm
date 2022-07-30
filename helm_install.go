@@ -8,14 +8,9 @@ import (
 	tKube "gitlab.com/alexandre.mahdhaoui/go-lib-testing-kube"
 )
 
-type KubeHelmTester interface {
-	HelmTester
-	tKube.KubeOptGetter
-}
-
 // Install installs a Helm Chart
-func Install(h KubeHelmTester) func() {
-	_, teardownNs := Init(h)
+func Install(h HelmTester, k tKube.KubeTester) func() {
+	_, teardownNs := Init(h, k)
 	teardownChart := Upgrade(h)
 
 	return func() {
@@ -27,7 +22,7 @@ func Install(h KubeHelmTester) func() {
 // Upgrade install/upgrade a chart
 //	Please ensure `chart dependency update` is done and Namespace exist before running this function
 // 	If you're calling this function directly please make sure to Init() beforehand
-func Upgrade(h KubeHelmTester) func() {
+func Upgrade(h HelmTester) func() {
 	helm.Upgrade(h.T(), h.HelmOpt(), h.ChartPath(), h.Id())
 
 	// Prepare Teardown
@@ -45,11 +40,11 @@ type UserPassGetter interface {
 
 // AddRepository adds a helm repository specified by `uri` with User/Pass authentication
 func AddRepository(h HelmTester, uri string, up UserPassGetter) string {
-	discardHelmLogger(h.HelmOpt())
+	// Discards Helm Logger
+	o := h.HelmOpt()
+	o.Logger = logger.Discard
 
-	u := up.User()
-	p := up.Pass()
-
+	u, p := up.User(), up.Pass()
 	s, err := helm.RunHelmCommandAndGetOutputE(
 		h.T(), h.HelmOpt(),
 		"repo", "add",
@@ -57,10 +52,6 @@ func AddRepository(h HelmTester, uri string, up UserPassGetter) string {
 		"--username", u, "--password", p,
 	)
 	require.NoError(h.T(), err)
-
+	o.Logger = logger.TestingT
 	return s
-}
-
-func discardHelmLogger(o *helm.Options) {
-	o.Logger = logger.Discard
 }
