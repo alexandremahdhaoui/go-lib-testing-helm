@@ -361,10 +361,10 @@ github.com/zclconf/go-cty v1.8.1/go.mod h1:vVKLxnk3puL4qRAv72AO+W99LUD4da90g3uUA
 github.com/zclconf/go-cty v1.9.1 h1:viqrgQwFl5UpSxc046qblj78wZXVDFnSOufaOTER+cc=
 github.com/zclconf/go-cty v1.9.1/go.mod h1:vVKLxnk3puL4qRAv72AO+W99LUD4da90g3uUAzyuvAk=
 github.com/zclconf/go-cty-debug v0.0.0-20191215020915-b22d67c1ba0b/go.mod h1:ZRKQfBXbGkpdV6QMzT3rU1kSTAnfu1dO8dPKjYprgj8=
-gitlab.com/alexandre.mahdhaoui/go-lib-testing-kube v0.1.0 h1:z3gNWW41gKab0/idptTu5keW4upq2UaF7kHyoVPXV4s=
-gitlab.com/alexandre.mahdhaoui/go-lib-testing-kube v0.1.0/go.mod h1:XI2YWm+dyH1ZHaa4ZZyzNEhpPsodBY81k9Mgy+Bww6o=
-gitlab.com/alexandre.mahdhaoui/go-lib-testing-utils v0.1.0 h1:g3ZUbQbdBU35HocLsk+HIc6T6YUeo0SKlwTqGfiKPO8=
-gitlab.com/alexandre.mahdhaoui/go-lib-testing-utils v0.1.0/go.mod h1:6bvqDOkFlKgxnhC8/XJ//fpH6krcgyz/CpiqwuLxN2c=
+gitlab.com/alexandre.mahdhaoui/go-lib-testing-kube v0.2.0 h1:GUN4Sh0x9c6z4sT3j+b9tT4/bR8np66YVzRJfZFkZW4=
+gitlab.com/alexandre.mahdhaoui/go-lib-testing-kube v0.2.0/go.mod h1:jXi3fNFeO5U5Xy7e3Df/ancznEjaQ9pH1c0z6N+Mhto=
+gitlab.com/alexandre.mahdhaoui/go-lib-testing-utils v0.2.0 h1:MXQPrTezEaezj/EUN5By4CHIl2xPUzSV/s8OZOYjTLk=
+gitlab.com/alexandre.mahdhaoui/go-lib-testing-utils v0.2.0/go.mod h1:6bvqDOkFlKgxnhC8/XJ//fpH6krcgyz/CpiqwuLxN2c=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
 go.opencensus.io v0.22.2/go.mod h1:yxeiOL68Rb0Xd1ddK5vPZ/oVn4vY4Ynel7k9FzqtOIw=

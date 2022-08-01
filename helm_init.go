@@ -7,7 +7,7 @@ import (
 )
 
 // Init runs helm dependencies update
-func Init(h HelmTester, k tKube.KubeTester) (string, func()) {
+func Init(h HelmConfig, k tKube.KubeTester) (string, func()) {
 	s, err := helm.RunHelmCommandAndGetOutputE(
 		h.T(), h.HelmOpt(),
 		"dependency", "update", h.ChartPath(),

@@ -7,73 +7,70 @@ import (
 )
 
 //----------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------- Functions --------------------------------------------------------
+//--------------------------------------------------- HelmConfigBuilder ------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 
-func NewHelmConfig(t *testing.T) HelmConfig {
-	h := HelmConfig{}
+type HelmConfigBuilder interface {
+	Build() HelmConfig
+	SetHelmOpt(*helm.Options) HelmConfigBuilder
+	SetChartPath(string) HelmConfigBuilder
+	SetId(s string) HelmConfigBuilder
+	SetT(t *testing.T) HelmConfigBuilder
+}
 
-	h.SetChartPath("")
-	h.SetHelmOpt(&helm.Options{})
-	h.SetId(tUtils.Uuid())
-	h.SetT(t)
+type helmConfigBuilder struct {
+	HelmConfigBuilder
+	helmConfig helmConfig
+}
 
-	return h
+func NewHelmConfigBuilder() HelmConfigBuilder { return &helmConfigBuilder{helmConfig: helmConfig{}} }
+
+func (b *helmConfigBuilder) SetChartPath(s string) HelmConfigBuilder {
+	b.helmConfig.chartPath = s
+	return b
+}
+func (b *helmConfigBuilder) SetHelmOpt(o *helm.Options) HelmConfigBuilder {
+	b.helmConfig.helmOpt = o
+	return b
+}
+func (b *helmConfigBuilder) SetId(s string) HelmConfigBuilder {
+	b.helmConfig.id = s
+	return b
+}
+func (b *helmConfigBuilder) SetT(t *testing.T) HelmConfigBuilder {
+	b.helmConfig.t = t
+	return b
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------ Struct --------------------------------------------------------
+//--------------------------------------------------- HelmConfig -------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 
-type HelmConfig struct {
-
-	// Getter
-	HelmOptGetter
+type HelmConfig interface {
+	ChartPath() string
+	HelmOpt() *helm.Options
 	tUtils.Tester
 	tUtils.Identifier
+}
 
-	// Setter
-	HelmOptSetter
-	ChartPathSetter
-
-	// Fields
+type helmConfig struct {
+	HelmConfig
 	chartPath string
 	id        string
 	helmOpt   *helm.Options
 	t         *testing.T
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------- Interfaces ------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-
-type HelmTester interface {
-	ChartPathGetter
-	HelmOptGetter
-	tUtils.Identifier
-	tUtils.Tester
+func NewHelmConfig(t *testing.T) HelmConfig {
+	return NewHelmConfigBuilder().
+		SetChartPath("").
+		SetHelmOpt(&helm.Options{}).
+		SetId(tUtils.Uuid()).
+		SetT(t).
+		Build()
 }
 
-type HelmOptGetter interface{ HelmOpt() *helm.Options }
-type ChartPathGetter interface{ ChartPath() string }
-
-type HelmOptSetter interface{ SetHelmOpt(*helm.Options) }
-type ChartPathSetter interface{ SetChartPath(string) }
-
-//----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------ Getters -------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-
-func (h *HelmConfig) ChartPath() string      { return h.chartPath }
-func (h *HelmConfig) HelmOpt() *helm.Options { return h.helmOpt }
-func (h *HelmConfig) Id() string             { return h.id }
-func (h *HelmConfig) T() *testing.T          { return h.t }
-
-//----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------ Setters -------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-
-func (h *HelmConfig) SetChartPath(s string)       { h.chartPath = s }
-func (h *HelmConfig) SetHelmOpt(ho *helm.Options) { h.helmOpt = ho }
-func (h *HelmConfig) SetId(s string)              { h.id = s }
-func (h *HelmConfig) SetT(t *testing.T)           { h.t = t }
+func (h *helmConfig) ChartPath() string      { return h.chartPath }
+func (h *helmConfig) HelmOpt() *helm.Options { return h.helmOpt }
+func (h *helmConfig) Id() string             { return h.id }
+func (h *helmConfig) T() *testing.T          { return h.t }
