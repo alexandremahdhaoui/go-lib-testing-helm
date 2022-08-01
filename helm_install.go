@@ -9,7 +9,7 @@ import (
 )
 
 // Install installs a Helm Chart
-func Install(h HelmTester, k tKube.KubeTester) func() {
+func Install(h HelmConfig, k tKube.KubeTester) func() {
 	_, teardownNs := Init(h, k)
 	teardownChart := Upgrade(h)
 
@@ -22,7 +22,7 @@ func Install(h HelmTester, k tKube.KubeTester) func() {
 // Upgrade install/upgrade a chart
 //	Please ensure `chart dependency update` is done and Namespace exist before running this function
 // 	If you're calling this function directly please make sure to Init() beforehand
-func Upgrade(h HelmTester) func() {
+func Upgrade(h HelmConfig) func() {
 	helm.Upgrade(h.T(), h.HelmOpt(), h.ChartPath(), h.Id())
 
 	// Prepare Teardown
@@ -39,7 +39,7 @@ type UserPassGetter interface {
 }
 
 // AddRepository adds a helm repository specified by `uri` with User/Pass authentication
-func AddRepository(h HelmTester, uri string, up UserPassGetter) string {
+func AddRepository(h HelmConfig, uri string, up UserPassGetter) string {
 	// Discards Helm Logger
 	o := h.HelmOpt()
 	o.Logger = logger.Discard
